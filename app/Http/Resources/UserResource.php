@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'id'=>$this->id,
             'role'=>$this->role,
             'email'=>$this->email,
-            'company'=>CompanyResource::whenLoaded('company')
+            
         ];
     }
 }
