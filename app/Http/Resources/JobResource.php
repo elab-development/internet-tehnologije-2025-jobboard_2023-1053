@@ -20,8 +20,8 @@ class JobResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'deadline' => $this->deadline?->toDateString(),
-            'company' => new CompanyResource($this->whenLoaded('company')),
-
+            'company' => new CompanyResource($this->company),
+            'salary'=>$this->salary
         ];
     }
 }
