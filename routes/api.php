@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum,role:company')->group(function () {
         Route::get("/application/jobs/{job}",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForJob']);
 });
 Route::middleware('auth:sanctum,role:student,alumni')->group(function () {
+       Route::post("/comment/add",[CommentController::class,'store']);
+    Route::put("/comment/update/{comment}",[CommentController::class,'update']);
 
 });
 Route::middleware('auth:sanctum,role:student')->group(function () {
@@ -39,8 +41,12 @@ Route::middleware('auth:sanctum,role:student')->group(function () {
 Route::middleware('auth:sanctum,role:student,alumni,admin')->group(function () {
     Route::get("/companies/name",[CompanyController::class,'searchCompany']);
         Route::get("/jobs/name",[JobController::class,'searchJobs']);
+          Route::get("/comments/company/{companyId}",[CommentController::class,'getCommentsForCompany']);
+    Route::delete("/comments/{comment}",[CommentController::class,'destroy']);
 
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
+       Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
+    Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);
 });

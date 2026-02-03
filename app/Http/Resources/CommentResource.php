@@ -7,10 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource
 {
-    /**
-     
-Transform the resource into an array.*
-@return array<string, mixed>*/
+
 public function toArray(Request $request): array{
-    return ['user'=>new UserResource($this->user),'company'=>new CompanyResource($this->company),'comment'=>$this->comment,'rating'=>$this->rating];}
+    return [
+                    'id'=>$this->id,
+        'user'=>new UserResource($this->user),
+    'company'=>new CompanyResource($this->company),
+    'comment'=>$this->comment,'rating'=>$this->rating];
+    }
 }
