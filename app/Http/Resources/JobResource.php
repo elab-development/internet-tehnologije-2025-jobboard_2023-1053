@@ -21,7 +21,6 @@ class JobResource extends JsonResource
             'description' => $this->description,
             'deadline' => $this->deadline?->toDateString(),
             'company' => new CompanyResource($this->whenLoaded('company')),
-            'applications_count' => $this->when(isset($this->applications_count), (int) $this->applications_count),
 
         ];
     }
