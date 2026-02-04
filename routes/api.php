@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -16,21 +17,24 @@ Route::post('/register', [AuthController::class, 'register'] );
 Route::post('/login', [AuthController::class, 'login'] );
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+
 Route::middleware('auth:sanctum,role:admin')->group(function () {
- Route::delete("/user/delete/{user}", [UserController::class, 'destroy'] );
+    Route::delete("/user/delete/{user}", [UserController::class, 'destroy'] );
     Route::delete("/company/delete/{company}", [CompanyController::class, 'destroy'] );
+    Route::post('/category', [CategoryController::class, 'store'] );
+    Route::put('/category/update', [CategoryController::class, 'update'] );
+    Route::delete('/category/{category}', [CategoryController::class, 'destroy'] );
+
+
 });
 Route::middleware('auth:sanctum,role:company')->group(function () {
     Route::get("/users/{role}/role",[UserController::class,'getUsersForRole']);
-        Route::put("/company/update/{company}",[CompanyController::class,'update']);
-          Route::post("job/add",[JobController::class,'store']);
+    Route::put("/company/update/{company}",[CompanyController::class,'update']);
+    Route::post("job/add",[JobController::class,'store']);
     Route::put("job/update/{job}",[JobController::class,'update']);
     Route::delete("job/delete/{job}",[JobController::class,'destroy']);
-        Route::get("/application/jobs/{job}",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForJob']);
-});
-Route::middleware('auth:sanctum,role:student,alumni')->group(function () {
-       Route::post("/comment/add",[CommentController::class,'store']);
-    Route::put("/comment/update/{comment}",[CommentController::class,'update']);
+    Route::get("/application/jobs/{job}",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForJob']);
+
 
 });
 Route::middleware('auth:sanctum,role:student')->group(function () {
@@ -40,20 +44,33 @@ Route::middleware('auth:sanctum,role:student')->group(function () {
     Route::get("/application/user",[\App\Http\Controllers\ApplicationController::class,'getApplicationsForUser']);
 
 
+
+
+
 });
+
 
 Route::middleware('auth:sanctum,role:student,alumni,admin')->group(function () {
     Route::get("/companies/name",[CompanyController::class,'searchCompany']);
-        Route::get("/jobs/name",[JobController::class,'searchJobs']);
-          Route::get("/comments/company/{companyId}",[CommentController::class,'getCommentsForCompany']);
+    Route::get('/jobs/search', [JobController::class, 'searchJobs']);
+    Route::get("/jobs",[JobController::class, 'index']);
+    Route::get("/comments/company/{companyId}",[CommentController::class,'getCommentsForCompany']);
     Route::delete("/comments/{comment}",[CommentController::class,'destroy']);
+});
+Route::middleware('auth:sanctum,role:student,alumni')->group(function () {
+    Route::post("/comment/add",[CommentController::class,'store']);
+    Route::put("/comment/update/{comment}",[CommentController::class,'update']);
 
 });
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get("/me",[UserController::class,'me']);
-
-
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
-       Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
+    Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
     Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);
+    Route::get("/category/search",[CategoryController::class,'searchCategory']);
+    Route::get("/category/{category}",[CategoryController::class,'show']);
+    Route::get("/category",[CategoryController::class,'index']);
+
+
 });
