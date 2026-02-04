@@ -89,9 +89,6 @@ class JobController extends Controller
     }
     public function searchJobs(Request $request)
     {
-        $name=$request->input('name','');
-        $jobs=$this->jobService->searchJobs($name);
-        return response()->json(['jobs'=>JobResource::collection($jobs)]);
         $filters = $request->only([
             'name',
             'category_id',

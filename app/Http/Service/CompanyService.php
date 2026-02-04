@@ -4,6 +4,7 @@ namespace App\Http\Service;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class CompanyService
 {
