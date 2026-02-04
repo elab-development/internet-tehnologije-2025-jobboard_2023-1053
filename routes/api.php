@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,9 @@ Route::middleware('auth:sanctum,role:student,alumni,admin')->group(function () {
 
 });
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get("/me",[UserController::class,'me']);
+
+
     Route::get('/jobs/company/{company_id}',[JobController::class,'getJobsForCompany']);
        Route::get("/comment/{companyId}",[\App\Http\Controllers\CommentController::class,'getCommentsForCompany']);
     Route::get("/comments/user",[CommentController::class,'getCommentsForUser']);
