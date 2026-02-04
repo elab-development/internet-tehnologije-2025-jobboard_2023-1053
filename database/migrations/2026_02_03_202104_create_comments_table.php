@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -12,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jobs', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
-            $table->foreignId('company_id')->constrained("companies")->onDelete("cascade");
-            $table->date("deadline");
-            $table->integer('salary')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->text('comment');
+            $table->double('rating')->default(5);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('comments');
     }
 };
