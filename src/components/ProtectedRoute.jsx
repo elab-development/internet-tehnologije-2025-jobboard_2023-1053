@@ -6,7 +6,7 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
     const { token, user,loading } = useStateContext();
 
     if (!token) {
-        return <Navigate to="/auth/login" replace />;
+        return <Navigate to="/home" replace />;
     }
     if (loading) {
         return (
@@ -16,7 +16,7 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
         );
     }
     if (!user) {
-        return <Navigate to="/auth/login" replace />;
+        return <Navigate to="/home" replace />;
     }
 
     if (allowedRoles.length === 0) {
@@ -24,8 +24,9 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
     }
 
     const role=user.role;
-    if (!allowedRoles(role)) {
-        return <Navigate to="/unauthorized" replace />;
+    console.log(role);
+    if (!allowedRoles.includes(role)) {
+        return <Navigate to="/home" replace />;
     }
 
     return <Outlet />;

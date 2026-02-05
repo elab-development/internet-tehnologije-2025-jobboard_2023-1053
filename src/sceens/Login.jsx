@@ -24,20 +24,7 @@ export const Login = () => {
                 setToken(data.token);
                 setUser(data.user);
                 console.log(data.user);
-                if (data.user.role === "admin") {
-                    navigate("/admin");
-                }
-                if (data.user.role=== "company") {
-                    navigate("/company");
-                }
-                if (data.user.role === "company") {
-                    navigate("/student");
-
-                }
-                if (data.user.role === "alumni") {
-                    navigate("/alumni");
-
-                }
+                navigate("/autenticate");
             })
             .catch((err) => {
                 console.log(err);
@@ -79,7 +66,7 @@ export const Login = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem', fontSize: '1rem', outline: 'none' }}
+                                style={{ width: '100%',boxSizing:"border-box", padding: '0.75rem 0.75rem 0.75rem 2.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem', fontSize: '1rem', outline: 'none' }}
                                 onFocus={(e) => e.target.style.borderColor = '#667eea'}
                                 onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                 placeholder="vas@email.com"
@@ -98,7 +85,7 @@ export const Login = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                style={{ width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem', fontSize: '1rem', outline: 'none' }}
+                                style={{ width: '100%',boxSizing:"border-box", padding: '0.75rem 0.75rem 0.75rem 2.5rem', border: '1px solid #d1d5db', borderRadius: '0.375rem', fontSize: '1rem', outline: 'none' }}
                                 onFocus={(e) => e.target.style.borderColor = '#667eea'}
                                 onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                 placeholder="••••••••"

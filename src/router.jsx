@@ -1,3 +1,4 @@
+
 import React from "react";
 import {createBrowserRouter, Navigate} from "react-router-dom";
 
@@ -7,11 +8,11 @@ import {Login} from "./sceens/Login.jsx";
 import {Register} from "./sceens/Register.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import HomeRedirect from "./components/HomeRedirect.jsx";
-import HomeAdmin from "./sceens/admin/HomeAdmin.jsx";
 import HomeCompany from "./sceens/company/HomeCompany.jsx";
 import HomeStudent from "./sceens/student/HomeStudent.jsx";
 import HomeAlumni from "./sceens/alumni/HomeAlumni.jsx";
 import {Home} from "./sceens/Home.jsx";
+
 
 
 
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: "/",
+        path: "/autenticate",
         element: <DefaultLayout />,
         children: [
             {
@@ -37,24 +38,19 @@ const router = createBrowserRouter([
                     { index: true, element: <HomeRedirect/> },
                 ],
             },
-            {
-                path: "admin",
-                element: <ProtectedRoute allowedRoles={["admin"]} />,
-                children: [
-                    {
-                        element: <HomeAdmin />,
-                    },
 
-                ],
-            },
             {
                 path: "company",
                 element: <ProtectedRoute allowedRoles={["company"]} />,
                 children: [
-                    {
-                        element: <HomeCompany />,
+
+                    { index: true, element: <HomeCompany />
 
                     },
+                    {
+                        path: "jobs/:jobId/applications",
+                        element: <JobApplications />
+                    }
 
                 ],
             },
@@ -62,10 +58,7 @@ const router = createBrowserRouter([
                 path: "student",
                 element: <ProtectedRoute allowedRoles={["student"]} />,
                 children: [
-                    {
-                        element: <HomeStudent />,
-
-                    },
+                    { index: true, element: <HomeStudent /> },
 
                 ],
             },
@@ -73,20 +66,20 @@ const router = createBrowserRouter([
                 path: "alumni",
                 element: <ProtectedRoute allowedRoles={["alumni"]} />,
                 children: [
-                    {
-                        element: <HomeAlumni />,
+                    { index: true, element: <HomeAlumni /> },
 
-                    },
+
 
                 ],
             },
+
 
         ],
     },
 
     {
         path: "*",
-        element: <Login />,
+        element: <Home />,
     },
 ]);
 

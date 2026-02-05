@@ -5,20 +5,20 @@ import { useStateContext } from "../context/ContextProvider.jsx";
 export default function HomeRedirect() {
     const { user, loading, token } = useStateContext();
 
-    if (!token) return <Navigate to="/auth/login" replace />;
+    if (!token) return <Navigate to="/home" replace />;
     if (loading) return <p>Učitavanje...</p>;
-    if (!user) return <Navigate to="/auth/login" replace />;
+    if (!user) return <Navigate to="/home" replace />;
 
     switch (user.role) {
         case "admin":
-            return <Navigate to="/admin" replace />;
+            return <Navigate to="/autenticate/admin" replace />;
         case "company":
-            return <Navigate to="/company" replace />;
+            return <Navigate to="/autenticate/company" replace />;
         case "alumni":
-            return <Navigate to="/alumni" replace />;
+            return <Navigate to="/autenticate/alumni" replace />;
         case "student":
-            return <Navigate to="/student" replace />;
+            return <Navigate to="/autenticate/student" replace />;
         default:
-            return <Navigate to="/auth/login" replace />;
+            return <Navigate to="/home" replace />;
     }
 }
