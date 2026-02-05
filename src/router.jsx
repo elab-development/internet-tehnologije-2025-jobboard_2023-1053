@@ -12,7 +12,10 @@ import HomeCompany from "./sceens/company/HomeCompany.jsx";
 import HomeStudent from "./sceens/student/HomeStudent.jsx";
 import HomeAlumni from "./sceens/alumni/HomeAlumni.jsx";
 import {Home} from "./sceens/Home.jsx";
-
+import {Jobs} from "./sceens/Jobs.jsx";
+import {Companies} from "./sceens/Companies.jsx";
+import JobApplications from "./sceens/company/JobApplications.jsx";
+import MyComments from "./sceens/alumni/MyComments.jsx";
 
 
 
@@ -67,12 +70,28 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute allowedRoles={["alumni"]} />,
                 children: [
                     { index: true, element: <HomeAlumni /> },
-
+                    {
+                        path: "my-comments",
+                        element: <MyComments />
+                    }
 
 
                 ],
             },
-
+            {
+                path: "jobs",
+                element: <ProtectedRoute allowedRoles={[]} />, // Svi autentifikovani korisnici mogu pristupiti
+                children: [
+                    { index: true, element: <Jobs /> },  // Komponenta Jobs
+                ],
+            },
+            {
+                path: "companies",
+                element: <ProtectedRoute allowedRoles={[]} />, // Svi autentifikovani korisnici mogu pristupiti
+                children: [
+                    { index: true, element: <Companies /> },  // Komponenta Companies
+                ],
+            },
 
         ],
     },
