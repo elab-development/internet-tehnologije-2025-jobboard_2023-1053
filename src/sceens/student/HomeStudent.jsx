@@ -4,7 +4,7 @@ import { Briefcase, FileText, Clock, CheckCircle, XCircle } from 'lucide-react';
 import {applicationAPI} from "../../api/applicationApi.js";
 
 
-const HomeStudent= () => {
+ const HomeStudent= () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -144,4 +144,4 @@ const HomeStudent= () => {
         </div>
     );
 };
-export default HomeStudent;
+ export default HomeStudent;
