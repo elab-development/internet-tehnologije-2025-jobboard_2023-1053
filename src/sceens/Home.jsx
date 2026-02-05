@@ -98,7 +98,8 @@ export const Home = () => {
                         Spremni da započnete?
                     </h2>
                     <p style={{ fontSize: '1.125rem', marginBottom: '2rem', opacity: 0.9 }}>
-                        Pridružite se tisućama korisnika koji su već pronašli svoje mesto
+                        Pridružite se hiljadama korisnika koji su već pronašli svoje mesto
+
                     </p>
                     <Link
                         to="/register"

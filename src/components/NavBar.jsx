@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Briefcase, LogOut, User, LayoutDashboard } from 'lucide-react';
+import {useStateContext} from "../context/ContextProvider.jsx";
 
 export const Navbar = () => {
 
-
+    const { user, token, setUser, setToken } = useStateContext();
+    const navigate = useNavigate();
     const handleLogout = () => {
-        logout();
+        setToken(null);
+        setUser(null);
         navigate('/login');
     };
 
@@ -19,31 +22,40 @@ export const Navbar = () => {
                 </Link>
 
                 <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                    {isAuthenticated ? (
+                    {token  ? (
                         <>
-                            <Link to="/jobs" style={{ textDecoration: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem', transition: 'background-color 0.2s' }}
-                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-                                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                                Poslovi
-                            </Link>
-                            <Link to="/companies" style={{ textDecoration: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem', transition: 'background-color 0.2s' }}
-                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-                                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                                Kompanije
-                            </Link>
-                            <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem', transition: 'background-color 0.2s' }}
-                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-                                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-                                <LayoutDashboard size={20} />
-                                Dashboard
-                            </Link>
+
+                            {user?.role !== 'company' && (
+                                <>
+                                    {user?.role==='student' && (
+                                        <Link
+                                            to="/autenticate/jobs"
+                                            style={{ textDecoration: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem' }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                        >
+                                            Poslovi
+                                        </Link>
+                                    )
+
+                                    }
+
+
+                                    <Link
+                                        to="/autenticate/companies"
+                                        style={{ textDecoration: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem' }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                    >
+                                        Kompanije
+                                    </Link>
+                                </>
+                            )}
+
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', paddingLeft: '1rem', borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <User size={20} />
                                     <span>{user?.name}</span>
-                                    <span style={{ fontSize: '0.75rem', backgroundColor: 'rgba(255,255,255,0.2)', padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>
-                    {user?.role}
-                  </span>
                                 </div>
                                 <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.25rem', cursor: 'pointer', transition: 'background-color 0.2s' }}
                                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
