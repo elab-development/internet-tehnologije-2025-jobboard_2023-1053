@@ -23,6 +23,8 @@ class CompanyResource extends JsonResource
             'average_rating' => round($this->comments->avg('rating'), 1),
             'comments_count' => $this->comments->count(),
             'address'=>$this->address,
+              'latitude'=>$this->latitude,
+            'longitude'=>$this->longitude,
             'phone'=>$this->phone
         ];
     }
