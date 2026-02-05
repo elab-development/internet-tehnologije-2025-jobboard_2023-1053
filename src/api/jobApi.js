@@ -5,9 +5,8 @@ export const jobApi = {
 
     getByCompany: (companyId) =>
         axiosClient.get(`/jobs/company/${companyId}`),
-
-    search: (name) =>
-        axiosClient.get(`/jobs/name?name=${name}`),
+    search: (params) =>
+        axiosClient.get('/jobs/search', { params }),
 
     create: (data) =>
         axiosClient.post('/job/add', data),
