@@ -12,27 +12,30 @@ export const Login = () => {
     const { setUser, setToken } = useStateContext();
     const navigate = useNavigate();
 
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
+    try {
+        const { data } = await axiosClient.post("/login", { email, password });
 
-        axiosClient
-            .post("/login", { email, password })
-            .then(({ data }) => {
-                setToken(data.token);
-                setUser(data.user);
-                console.log(data.user);
-                navigate("/autenticate");
-            })
-            .catch((err) => {
-                console.log(err);
-                const backendError = err?.message || "Greška prilikom prijave";
-                setError(backendError);
-            })
-            .finally(() => setLoading(false));
-    };
+        setToken(data.token);   // čuvanje tokena u context
+        setUser(data.user);     // čuvanje usera u context
+        console.log("Ulogovani korisnik:", data.user);
+
+        navigate("/authenticate");  // ili ruta gde ideš posle login-a
+    } catch (err) {
+        console.log("Axios greška:", err.response);
+
+        // backendError sada uzima pravu poruku iz backend-a
+        const backendError = err.response?.data?.message || "Greška prilikom prijave";
+        setError(backendError);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
 
     return (
