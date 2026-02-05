@@ -23,7 +23,7 @@ export const Home = () => {
                             Počnite sada
                         </Link>
                         <Link
-                            to="/jobs"
+                            to="/autenticate/jobs"
                             style={{ display: 'inline-block', backgroundColor: 'transparent', color: 'white', padding: '1rem 2rem', borderRadius: '0.5rem', textDecoration: 'none', fontWeight: 'bold', fontSize: '1.125rem', border: '2px solid white', transition: 'background-color 0.2s' }}
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
