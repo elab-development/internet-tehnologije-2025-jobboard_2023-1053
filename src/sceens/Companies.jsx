@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
-import { Building2, Search, MapPin, Users } from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {Building2, Search, MapPin, Users, Star} from 'lucide-react';
+import {companyAPI} from "../api/companyApi.js";
+import CommentModal from "./CommentModal.jsx";
+import CompanyMap from "./CompanyMap.jsx";
 
 export const Companies = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState(null);
+    const [companies, setCompanies] = useState([]);
 
-    // Mock data - replace with actual API call
-    const companies = [
-        { id: 1, name: 'Tech Solutions d.o.o.', location: 'Beograd', employees: '50-100', description: 'Softverska kompanija' },
-        { id: 2, name: 'Digital Agency', location: 'Novi Sad', employees: '10-50', description: 'Digitalni marketing' },
-    ];
+    const loadCompanies = async (name = "") => {
+        const res = await companyAPI.search(name);
+        const companiesData = res.data.companies || [];
+
+        // zadrži samo one koje imaju koordinate
+        const validCompanies = companiesData.filter(
+            c => c.latitude && c.longitude
+        );
+
+        setCompanies(validCompanies);
+    };
+
+    const handleSearch = () => {
+        loadCompanies(searchTerm);
+    };
+
+
 
     return (
         <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
@@ -25,10 +42,10 @@ export const Companies = () => {
                                 placeholder="Pretražite kompanije..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', border: 'none', outline: 'none', color: '#1f2937', fontSize: '1rem' }}
+                                style={{ width: '90%', padding: '1rem 1rem 1rem 3rem', border: 'none', outline: 'none', color: '#1f2937', fontSize: '1rem' }}
                             />
                         </div>
-                        <button style={{ backgroundColor: '#667eea', color: 'white', padding: '1rem 2rem', borderRadius: '0.375rem', border: 'none', cursor: 'pointer', fontWeight: '600' }}>
+                        <button onClick={handleSearch} style={{ backgroundColor: '#667eea', color: 'white', padding: '1rem 2rem', borderRadius: '0.375rem', border: 'none', cursor: 'pointer', fontWeight: '600' }}>
                             Pretraži
                         </button>
                     </div>
@@ -54,17 +71,47 @@ export const Companies = () => {
                                     <div style={{ display: 'flex', gap: '1.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <MapPin size={16} />
-                                            <span>{company.location}</span>
+                                            <span>{company.address}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Star size={16} />
+                                            <span>{company.average_rating}</span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <Users size={16} />
-                                            <span>{company.employees} zaposlenih</span>
+                                            <span>{company.comments_count}</span>
                                         </div>
+
                                     </div>
+
+
                                 </div>
+                                <button
+                                    onClick={() => setSelectedCompany(company)}
+                                    style={{
+                                        marginTop: '1rem',
+                                        backgroundColor: '#e5e7eb',
+                                        border: 'none',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '0.375rem',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    💬 Vidi komentare
+                                </button>
+                                {selectedCompany && (
+                                    <CommentModal
+                                        company={selectedCompany}
+                                        onClose={() => setSelectedCompany(null)}
+                                    />
+                                )}
                             </div>
                         </div>
                     ))}
+                    {companies.length > 0 && (
+                        <CompanyMap companies={companies} />
+                    )}
+
                 </div>
             </div>
         </div>
