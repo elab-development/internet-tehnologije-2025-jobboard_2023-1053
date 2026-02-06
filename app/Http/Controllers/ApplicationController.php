@@ -41,7 +41,7 @@ class ApplicationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'job_id' => 'required|exists:jobs,id',
-            'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'cv' => 'required|file|mimes:pdf,doc,docx',
             'linkedinUrl' => 'nullable|url'
         ]);
 
