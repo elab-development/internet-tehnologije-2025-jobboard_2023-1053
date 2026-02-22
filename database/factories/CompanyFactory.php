@@ -28,7 +28,7 @@ class CompanyFactory extends Factory
             ]),
             'phone' => $this->faker->phoneNumber,
             'description' => $this->faker->catchPhrase,
-            'user_id' => null,
+            'user_id' => User::factory(),
         ];
     }
        public function configure()

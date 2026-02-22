@@ -69,7 +69,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $categoryUpdate=$this->categoryService->update($category,$request);
+        $categoryUpdate=$this->categoryService->update($category,$request->toArray());
         return response()->json(['category'=>new CategoryResource($categoryUpdate)],200);
     }
 
