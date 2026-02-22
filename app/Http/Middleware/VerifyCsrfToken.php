@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'api/*',          // SPA frontend zahtevi
+        'webhook/receive' // primer treće strane
     ];
 }
