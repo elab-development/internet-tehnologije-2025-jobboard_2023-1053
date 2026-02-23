@@ -50,3 +50,6 @@ Pretraga: Filtriranje poslova po kategorijama i ključnim rečima.
 Prijave: Slanje CV-a i prijavnog formulara na oglas.
 
 Komentari: Alumnisti i korisnici mogu učestvovati u zajednici.
+
+
+3. Docker-pokretanje pomocu komande: docker compose up -d --build
