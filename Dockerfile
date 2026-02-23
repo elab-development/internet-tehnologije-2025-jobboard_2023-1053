@@ -9,10 +9,8 @@ WORKDIR /var/www
 COPY . .
 
 RUN composer install --optimize-autoloader --no-interaction
-
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-RUN php artisan config:cache && php artisan route:cache
-
-# CMD ["php-fpm"]
+# Koristimo PHP built-in server za development
+EXPOSE 8000
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
