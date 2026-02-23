@@ -1,6 +1,6 @@
 import axios from "axios";
 const axiosClient = axios.create({
-    baseURL: "https://localhost:8000/api",  // << promenjeno
+    baseURL: "https://internet-tehnologije-2025-jobboard2023-1053-production-58f6.up.railway.app/api",  // << promenjeno
     headers: {
         
         Accept: "application/json",
