@@ -1,10 +1,20 @@
-FROM node:alpine
+FROM node:alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
-EXPOSE 5173
+RUN npm run build
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+FROM node:alpine
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 10000
+
+CMD ["serve", "-s", "dist", "-l", "10000"]
