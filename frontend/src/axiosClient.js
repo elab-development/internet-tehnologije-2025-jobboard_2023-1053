@@ -1,6 +1,6 @@
 import axios from "axios";
 const axiosClient = axios.create({
-    baseURL: "http://backend:8000/api",  // << promenjeno
+    baseURL: "https://jobboardbackend-1aqb.onrender.com:8000/api",  // << promenjeno
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
