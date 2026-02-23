@@ -1,16 +1,52 @@
-# React + Vite
+Opis projekta
+JobBoard je platforma koja povezuje poslodavce i kandidate. Poslodavci mogu da postavljaju oglase, 
+dok kandidati i alumnisti mogu da pretražuju poslove, šalju prijave i ostavljaju komentare. 
+Sistem uključuje i administraciju za nadzor sadržaja.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Korišćene tehnologije:
+Backend: Laravel (PHP)
 
-Currently, two official plugins are available:
+Frontend: React (JavaScript)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Baza podataka: MySQL
 
-## React Compiler
+Instrukcije za lokalno pokretanje
+Pratite ove korake da biste pokrenuli aplikaciju na svom računaru.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Podešavanje Backenda (Laravel)
+   Otvorite terminal u glavnom (root) folderu projekta:
 
-## Expanding the ESLint configuration
+Instalacija zavisnosti: composer install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Napravite kopiju .env fajla: cp .env.example .env
+
+U .env fajlu podesite ime vaše baze, username i lozinku.
+
+Migracija i popunjavanje baze (seed): php artisan migrate:fresh --seed
+
+Pokretanje servera: php artisan serve
+
+Backend će raditi na adresi: http://127.0.0.1:8000
+
+2. Podešavanje Frontenda (React)
+   Otvorite novi terminal i uđite u frontend folder:
+
+
+Ulazak u folder: cd frontend
+
+Instalacija paketa: npm install
+
+Pokretanje aplikacije: npm run dev
+
+Frontend će raditi na adresi koju ispiše terminal (obično http://localhost:5173).
+
+Funkcionalnosti
+Registracija i prijava: Za kandidate i poslodavce.
+
+Oglasi: Poslodavci kreiraju, menjaju i brišu oglase.
+
+Pretraga: Filtriranje poslova po kategorijama i ključnim rečima.
+
+Prijave: Slanje CV-a i prijavnog formulara na oglas.
+
+Komentari: Alumnisti i korisnici mogu učestvovati u zajednici.

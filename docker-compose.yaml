@@ -1,0 +1,42 @@
+services:
+    # 1. Laravel Backend (PHP-FPM)
+    backend:
+        build: 
+            context: .
+        container_name: backend
+        ports:
+            - "8000:8000"
+
+    # 2. React Frontend (Vite)
+    frontend:
+        build: 
+            context: ./frontend
+        container_name: frontend
+        ports:
+            - "5173:5173"
+
+    # 4. MySQL Baza
+    db:
+        image: mysql
+        container_name: mysql
+        environment:
+            MYSQL_DATABASE: job_board_backend
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        volumes:
+            - db_data:/var/lib/mysql
+
+    # 5. phpMyAdmin
+    phpmyadmin:
+        image: phpmyadmin
+        container_name: phpmyadmin
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOST: db
+            PMA_USER: root
+            PMA_ARBITRARY: 1
+        depends_on:
+            - db
+
+volumes:
+    db_data:
