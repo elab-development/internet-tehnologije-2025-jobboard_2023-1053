@@ -18,10 +18,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-     "*"
+     'allowed_origins' => [
+        'https://supportive-simplicity-production-9dfc.up.railway.app',
+        'http://localhost:5173',
     ],
-
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
