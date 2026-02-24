@@ -14,13 +14,10 @@ return [
     |
     */
 
-'paths' => ['api/*', 'login', 'register', 'sanctum/csrf-cookie'],
+'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'register'],
     'allowed_methods' => ['*'],
 
-     'allowed_origins' => [
-        'https://supportive-simplicity-production-9dfc.up.railway.app',
-        'http://localhost:5173',
-    ],
+    'allowed_origins' => ['*'],
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
