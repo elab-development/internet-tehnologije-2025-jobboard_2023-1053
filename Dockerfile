@@ -14,4 +14,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 #
 
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+CMD ["sh", "-lc", "php artisan config:clear && php artisan cache:clear && php artisan route:clear && php -S 0.0.0.0:8000 -t public"]
