@@ -8,6 +8,8 @@ use App\Http\Service\JobService;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
+
 
 class JobController extends Controller
 {
@@ -18,6 +20,16 @@ class JobController extends Controller
         $this->jobService = $jobService;
         $this->companyService = $companyService;
     }
+    /**
+ * @OA\Get(
+ *   path="/jobs",
+ *   tags={"Jobs"},
+ *   summary="List jobs",
+ *   security={{"sanctum":{}}},
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function index()
     {
         $jobs=Job::all();
@@ -35,6 +47,27 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+ * @OA\Post(
+ *   path="/job/add",
+ *   tags={"Jobs"},
+ *   summary="Create job (company)",
+ *   security={{"sanctum":{}}},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     @OA\JsonContent(
+ *       required={"title","description","company_id","deadline"},
+ *       @OA\Property(property="title", type="string", example="Backend Intern"),
+ *       @OA\Property(property="description", type="string", example="Opis posla..."),
+ *       @OA\Property(property="company_id", type="integer", example=2),
+ *       @OA\Property(property="deadline", type="string", format="date", example="2026-06-30")
+ *     )
+ *   ),
+ *   @OA\Response(response=201, description="Created"),
+ *   @OA\Response(response=400, description="Validation error / bad request"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function store(Request $request)
     {
         $validator=Validator::make($request->all(),[
@@ -73,6 +106,26 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+ * @OA\Put(
+ *   path="/job/update/{job}",
+ *   tags={"Jobs"},
+ *   summary="Update job (company)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="job", in="path", required=true, @OA\Schema(type="integer"), example=7),
+ *   @OA\RequestBody(
+ *     required=false,
+ *     @OA\JsonContent(
+ *       @OA\Property(property="title", type="string", example="Updated title"),
+ *       @OA\Property(property="description", type="string", example="Updated description"),
+ *       @OA\Property(property="deadline", type="string", format="date", example="2026-07-15")
+ *     )
+ *   ),
+ *   @OA\Response(response=201, description="Updated (your code returns 201)"),
+ *   @OA\Response(response=401, description="Unauthenticated"),
+ *   @OA\Response(response=404, description="Not found")
+ * )
+ */
     public function update(Request $request, Job $job)
     {
         $jobUpdated=$this->jobService->updateJob($job,$request->toArray());
@@ -82,11 +135,37 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+ * @OA\Delete(
+ *   path="/job/delete/{job}",
+ *   tags={"Jobs"},
+ *   summary="Delete job (company)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="job", in="path", required=true, @OA\Schema(type="integer"), example=7),
+ *   @OA\Response(response=201, description="Deleted (your code returns 201)"),
+ *   @OA\Response(response=401, description="Unauthenticated"),
+ *   @OA\Response(response=404, description="Not found")
+ * )
+ */
     public function destroy(Job $job)
     {
         $this->jobService->deleteJob($job);
         return response()->json(["message"=>"Job deleted successfully"],201);
     }
+    /**
+ * @OA\Get(
+ *   path="/jobs/search",
+ *   tags={"Jobs"},
+ *   summary="Search jobs",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="name", in="query", required=false, @OA\Schema(type="string"), example="backend"),
+ *   @OA\Parameter(name="category_id", in="query", required=false, @OA\Schema(type="integer"), example=3),
+ *   @OA\Parameter(name="salary_min", in="query", required=false, @OA\Schema(type="number"), example=600),
+ *   @OA\Parameter(name="salary_max", in="query", required=false, @OA\Schema(type="number"), example=1200),
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function searchJobs(Request $request)
     {
         $filters = $request->only([
@@ -108,6 +187,17 @@ class JobController extends Controller
             ]
         ]);
     }
+    /**
+ * @OA\Get(
+ *   path="/jobs/company/{company_id}",
+ *   tags={"Jobs"},
+ *   summary="Get jobs for company",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="company_id", in="path", required=true, @OA\Schema(type="integer"), example=2),
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function getJobsForCompany($company_id){
         $jobs=$this->jobService->getJobsForCompany($company_id);
         return response()->json(['jobs'=>JobResource::collection($jobs)]);

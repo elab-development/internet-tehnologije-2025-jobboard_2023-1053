@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use OpenApi\Annotations as OA;
+
 use App\Http\Resources\ApplicationResource;
 use App\Http\Service\ApplicationService;
 use App\Http\Service\JobService;
@@ -37,6 +39,30 @@ class ApplicationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+ * @OA\Post(
+ *   path="/application/add",
+ *   tags={"Applications"},
+ *   summary="Add application (student)",
+ *   security={{"sanctum":{}}},
+ *   @OA\RequestBody(
+ *     required=true,
+ *     content={
+ *       "multipart/form-data"={
+ *         @OA\Schema(
+ *           required={"job_id","cv"},
+ *           @OA\Property(property="job_id", type="integer", example=7),
+ *           @OA\Property(property="cv", type="string", format="binary"),
+ *           @OA\Property(property="linkedinUrl", type="string", format="uri", nullable=true, example="https://linkedin.com/in/username")
+ *         )
+ *       }
+ *     }
+ *   ),
+ *   @OA\Response(response=201, description="Created"),
+ *   @OA\Response(response=400, description="Validation error / bad request"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -97,15 +123,48 @@ class ApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+ * @OA\Delete(
+ *   path="/application/delete/{application}",
+ *   tags={"Applications"},
+ *   summary="Delete application (student)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="application", in="path", required=true, @OA\Schema(type="integer"), example=11),
+ *   @OA\Response(response=200, description="Deleted"),
+ *   @OA\Response(response=401, description="Unauthenticated"),
+ *   @OA\Response(response=404, description="Not found")
+ * )
+ */
     public function destroy(Application $application)
     {
         $this->applicationService->deleteAplication($application);
         return response()->json(["message"=>"Application deleted successfully"], 200);
     }
+    /**
+ * @OA\Get(
+ *   path="/application/jobs/{job}",
+ *   tags={"Applications"},
+ *   summary="Get applications for job (company)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="job", in="path", required=true, @OA\Schema(type="integer"), example=7),
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function getApplicationsForJob( $jobId){
         $applications=$this->applicationService->getAllAplicationsForJob($jobId);
         return response()->json(["applications"=>ApplicationResource::collection($applications)], 200);
     }
+    /**
+ * @OA\Get(
+ *   path="/application/user",
+ *   tags={"Applications"},
+ *   summary="Get applications for current user (student)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function getApplicationsForUser(Request $request){
         $userId=$request->user()->id;
         $applications=$this->applicationService->getAllAplicationsForUser($userId);

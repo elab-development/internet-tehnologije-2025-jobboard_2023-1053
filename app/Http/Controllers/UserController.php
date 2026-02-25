@@ -7,6 +7,8 @@ use App\Http\Service\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
+
 
 class UserController extends Controller
 {
@@ -41,6 +43,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
+    
     public function show(User $user)
     {
         $user=$this->userService->getUserById($user);
@@ -67,11 +70,41 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    /**
+ * @OA\Delete(
+ *   path="/user/delete/{user}",
+ *   tags={"Users"},
+ *   summary="Delete user (admin)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(name="user", in="path", required=true, @OA\Schema(type="integer"), example=1),
+ *   @OA\Response(response=200, description="Deleted"),
+ *   @OA\Response(response=401, description="Unauthenticated"),
+ *   @OA\Response(response=404, description="Not found")
+ * )
+ */
     public function destroy(User $user)
     {
         $userDeleted=$this->userService->deleteUser($user);
         return response()->json(['message'=>"User deleted successfully"],200);
     }
+    /**
+ * @OA\Get(
+ *   path="/users/{role}/role",
+ *   tags={"Users"},
+ *   summary="Get users for role (company)",
+ *   security={{"sanctum":{}}},
+ *   @OA\Parameter(
+ *     name="role",
+ *     in="path",
+ *     required=true,
+ *     @OA\Schema(type="string", enum={"admin","company","student","alumni"}),
+ *     example="student"
+ *   ),
+ *   @OA\Response(response=200, description="OK"),
+ *   @OA\Response(response=400, description="Validation error"),
+ *   @OA\Response(response=401, description="Unauthenticated")
+ * )
+ */
     public function getUsersForRole($role){
         $validator=Validator::make(['role'=>$role],[
             'role'=> 'required|in:admin,company,student,alumni',
