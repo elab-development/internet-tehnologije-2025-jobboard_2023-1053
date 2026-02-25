@@ -7,12 +7,12 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\OpenApi(
  *   @OA\Info(
- *     title="ServisHub API",
+ *     title="JobBoard API",
  *     version="1.0.0"
  *   ),
  *   @OA\Server(
  *     url="/api",
- *     description="API base"
+ *     description="API Base URL"
  *   )
  * )
  *
@@ -21,7 +21,7 @@ use OpenApi\Annotations as OA;
  *   type="apiKey",
  *   in="header",
  *   name="Authorization",
- *   description="Bearer {token}"
+ *   description="Enter Bearer token"
  * )
  */
 class OpenApi {}
